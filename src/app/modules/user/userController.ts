@@ -16,7 +16,7 @@ const verifyOtpController = catchAsync(async (req: Request, res: Response) => {
 
 const getAllUsersController = catchAsync(async (req: Request, res: Response) => {
     const result = await userService.getAllUsers();
-    sendResponse(res, { statusCode: StatusCodes.OK, success: true, message: 'All users', data: result })
+    sendResponse(res, { statusCode: StatusCodes.OK, success: true, message: 'Get all users successfully', data: result })
 })
 
 export const userController = { createUserController, verifyOtpController, getAllUsersController }
