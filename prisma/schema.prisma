@@ -14,33 +14,56 @@ datasource db {
 }
 
 model User {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   firstName   String
   lastName    String
-  email       String   @unique
+  email       String    @unique
   password    String
   phoneNumber String
-  role        Role     @default(USER) @map("role")
+  role        Role      @default(USER) @map("role")
   address     String
   city        String
   state       String
   zipCode     String
   uploadImage String?
-  status      Status   @default(PENDING)
-  createAt    DateTime @default(now())
-  updateAt    DateTime @updatedAt
+  status      Status    @default(PENDING)
+  createAt    DateTime  @default(now())
+  updateAt    DateTime  @updatedAt
+  Comment     Comment[]
+
+  @@map("user")
 }
 
 model Product {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String
-  brandName   String
-  price       Float
-  category    CategoryList
-  image       String[]
-  createAt    DateTime     @default(now())
-  updateAt    DateTime     @updatedAt
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  description  String
+  brandName    String
+  price        Float
+  discount     Float? @default(0)
+  categoryType CategoryList
+  category     String
+  rating       Float? @default(0)
+  image        String[]
+  comments     Comment[]
+  createAt     DateTime     @default(now())
+  updateAt     DateTime     @updatedAt
+
+  @@map("product")
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String?  @db.ObjectId
+  productId String?  @db.ObjectId
+  comment   String
+  rating    Float
+  createAt  DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  Product   Product? @relation(fields: [productId], references: [id])
+  User      User?    @relation(fields: [userId], references: [id])
+
+  @@map("comment")
 }
 
 model OTPModel {

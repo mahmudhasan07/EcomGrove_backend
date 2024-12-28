@@ -6,7 +6,7 @@ import { StatusCodes } from "http-status-codes";
 
 const createUserController = catchAsync(async (req: Request, res: Response) => {
     const result = await userService.createUser(req.body);
-    sendResponse(res, { statusCode: StatusCodes.CREATED, success: true, message: 'User created successfully', data: result })
+    sendResponse(res, { statusCode: StatusCodes.CREATED, success: true, message: 'Check your email address for verify your OTP', data: result })
 })
 
 const verifyOtpController = catchAsync(async (req: Request, res: Response) => {
