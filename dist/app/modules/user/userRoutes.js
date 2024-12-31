@@ -10,4 +10,6 @@ const validateRequest_1 = __importDefault(require("../../middleware/validateRequ
 const userValidation_1 = require("./userValidation");
 const route = (0, express_1.Router)();
 route.post('/create', (0, validateRequest_1.default)(userValidation_1.userValidation.userRegisterValidationSchema), userController_1.userController.createUserController);
+route.post("/verify-otp", userController_1.userController.verifyOtpController);
+route.get("/all-users", userController_1.userController.getAllUsersController);
 exports.userRoutes = route;

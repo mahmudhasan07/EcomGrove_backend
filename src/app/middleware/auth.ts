@@ -18,19 +18,14 @@ const auth = (...roles: string[]) => {
         throw new ApiError(StatusCodes.UNAUTHORIZED, "You are not authorized!");
       }
 
-      const verifiedUser = jwt
+      const verifiedUser = token && jwt.verify(token, process.env.TOKEN_SECRET as string)
       
-      
-      jwtHelpers.verifyToken(
-        token,
-        config.jwt.jwt_secret as Secret
-      );
 
       req.user = verifiedUser;
 
-      if (roles.length && !roles.includes(verifiedUser.role)) {
+      if (roles.length && !roles.includes((verifiedUser as jwt.JwtPayload).role)) {
         throw new ApiError(
-          httpStatus.FORBIDDEN,
+          StatusCodes.FORBIDDEN,
           "Forbidden, You are not authorized!"
         );
       }

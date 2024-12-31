@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OTPFn = void 0;
 const nodemailer_1 = __importDefault(require("nodemailer"));
+const app_1 = require("../app");
 const OTPFn = (email) => __awaiter(void 0, void 0, void 0, function* () {
     const otp = Math.floor(100000 + Math.random() * 900000);
     // console.log(`OTP for ${email} is ${otp}`);
@@ -45,6 +46,7 @@ const OTPFn = (email) => __awaiter(void 0, void 0, void 0, function* () {
     };
     // Send mail with defined transport object
     yield transporter.sendMail(mailOptions);
+    app_1.myCache.set(email, otp);
     return otp;
 });
 exports.OTPFn = OTPFn;
