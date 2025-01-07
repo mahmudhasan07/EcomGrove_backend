@@ -16,7 +16,7 @@ export const OTPFn = async (email: string) => {
 
     // Set up email data
     const mailOptions = {
-        from: 'mahmudhasan.hb@gmail.com', // Sender address
+        from: '"EcomGrove" <mahmudhasan.hb@gmail.com>', // Sender address
         to: email, // List of receivers
         subject: 'Your OTP Code', // Subject line
         // text: `Your OTP code is ${otp}` // Plain text body

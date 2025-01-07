@@ -26,7 +26,7 @@ model User {
   state       String
   zipCode     String
   uploadImage String?
-  status      Status    @default(PENDING)
+  status      Status?    @default(PENDING)
   createAt    DateTime  @default(now())
   updateAt    DateTime  @updatedAt
   Comment     Comment[]

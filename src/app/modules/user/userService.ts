@@ -7,8 +7,11 @@ import { myCache } from "../../../app";
 
 const prisma = new PrismaClient()
 
-const createUser = async (payload: User) => {
+const createUser = async (req: any) => {
     // console.log('User created successfully');
+    const file = req.file;
+    const payload = req.body;
+
     const emailFinder = await prisma.user.findUnique({
         where: {
             email: payload.email
@@ -23,7 +26,9 @@ const createUser = async (payload: User) => {
     const result = await prisma.user.create({
         data: {
             ...payload,
-            password
+            password,
+            uploadImage: file && file?.location
+
         }
     })
 
