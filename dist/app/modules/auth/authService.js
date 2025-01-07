@@ -12,17 +12,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.authService = void 0;
 const client_1 = require("@prisma/client");
 const ApiErrors_1 = __importDefault(require("../../error/ApiErrors"));
 const http_status_codes_1 = require("http-status-codes");
 const OTPFn_1 = require("../../../shared/OTPFn");
 const prisma = new client_1.PrismaClient();
 const logInFormDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    // console.log(payload)
     const finderUser = yield prisma.user.findUnique({
         where: {
             email: payload === null || payload === void 0 ? void 0 : payload.email
         }
     });
+    // console.log(finderUser);
     if (!finderUser) {
         throw new ApiErrors_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'User not found');
     }
@@ -33,4 +36,9 @@ const logInFormDB = (payload) => __awaiter(void 0, void 0, void 0, function* () 
     if ((finderUser === null || finderUser === void 0 ? void 0 : finderUser.status) === "BLOCKED") {
         return { message: 'Your account has been blocked' };
     }
+    if ((finderUser === null || finderUser === void 0 ? void 0 : finderUser.password) !== payload.password) {
+        throw new ApiErrors_1.default(http_status_codes_1.StatusCodes.UNAUTHORIZED, 'Password is incorrect');
+    }
+    return { id: finderUser.id, email: finderUser.email, role: finderUser.role };
 });
+exports.authService = { logInFormDB };

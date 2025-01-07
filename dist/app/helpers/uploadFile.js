@@ -29,7 +29,7 @@ const s3Storage = (0, multer_s3_1.default)({
 // Upload image configurations
 const upload = (0, multer_1.default)({ storage: s3Storage });
 // Single image uploads
-const uploadProfileImage = upload.array("profileImage");
+const uploadProfileImage = upload.single("profileImage");
 const uploadProductImages = upload.array("productImages");
 // const uploadPackageImage = upload.single("packageImage");
 // const uploadServiceImage = upload.single("serviceImage");

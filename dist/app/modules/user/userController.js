@@ -18,7 +18,7 @@ const userService_1 = require("./userService");
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const http_status_codes_1 = require("http-status-codes");
 const createUserController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield userService_1.userService.createUser(req.body);
+    const result = yield userService_1.userService.createUser(req);
     (0, sendResponse_1.default)(res, { statusCode: http_status_codes_1.StatusCodes.CREATED, success: true, message: 'Check your email address for verify your OTP', data: result });
 }));
 const verifyOtpController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -27,6 +27,8 @@ const verifyOtpController = (0, catchAsync_1.default)((req, res) => __awaiter(vo
 }));
 const getAllUsersController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield userService_1.userService.getAllUsers();
-    (0, sendResponse_1.default)(res, { statusCode: http_status_codes_1.StatusCodes.OK, success: true, message: 'Get all users successfully', data: result });
+    const pageNumber = req.query.page ? parseInt(req.query.page) : 1;
+    const resultLimit = req.query.limit ? parseInt(req.query.limit) : 10;
+    (0, sendResponse_1.default)(res, { statusCode: http_status_codes_1.StatusCodes.OK, success: true, message: 'Get all users successfully', data: result.slice((pageNumber - 1) * resultLimit, pageNumber * resultLimit), meta: { limit: resultLimit, page: pageNumber, total: result.length } });
 }));
 exports.userController = { createUserController, verifyOtpController, getAllUsersController };

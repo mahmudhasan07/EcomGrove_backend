@@ -13,7 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authController = void 0;
+const http_status_codes_1 = require("http-status-codes");
 const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
+const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
+const authService_1 = require("./authService");
 const logInController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield authService_1.authService.logInFormDB(req.body);
+    (0, sendResponse_1.default)(res, { statusCode: http_status_codes_1.StatusCodes.OK, message: 'Login success', data: result, success: true });
 }));
 exports.authController = { logInController };

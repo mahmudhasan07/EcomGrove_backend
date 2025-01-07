@@ -16,6 +16,6 @@ const userRegisterValidationSchema = zod_1.z.object({
     state: zod_1.z.string().min(2, "Country must be at least 2 characters long"),
     zipCode: zod_1.z.string().min(2, "Zip code must be at least 2 characters long"),
     uploadImage: zod_1.z.string().optional(),
-    status: zod_1.z.enum(["ACTIVE", "BLOCKED", "PENDING"]),
+    status: zod_1.z.enum(["ACTIVE", "BLOCKED", "PENDING"]).optional()
 });
 exports.userValidation = { userRegisterValidationSchema };

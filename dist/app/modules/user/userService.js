@@ -20,8 +20,10 @@ const bcrypt_1 = require("bcrypt");
 const OTPFn_1 = require("../../../shared/OTPFn");
 const app_1 = require("../../../app");
 const prisma = new client_1.PrismaClient();
-const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+const createUser = (req) => __awaiter(void 0, void 0, void 0, function* () {
     // console.log('User created successfully');
+    const file = req.file;
+    const payload = req.body;
     const emailFinder = yield prisma.user.findUnique({
         where: {
             email: payload.email
@@ -32,7 +34,7 @@ const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     }
     const password = yield (0, bcrypt_1.hash)(payload.password, 10);
     const result = yield prisma.user.create({
-        data: Object.assign(Object.assign({}, payload), { password })
+        data: Object.assign(Object.assign({}, payload), { password, uploadImage: file && (file === null || file === void 0 ? void 0 : file.location) })
     });
     if (!result) {
         result;
