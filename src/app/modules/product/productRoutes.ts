@@ -15,6 +15,8 @@ route.post("/create",
 )
 
 route.get("/all", productController.getAllProductsController)
+route.delete("/delete/:id", productController.deleteProductController)
+route.put('/update/:id', productController.updateProductController)
 
 
 

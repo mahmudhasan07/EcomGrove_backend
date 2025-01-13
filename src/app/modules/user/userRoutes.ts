@@ -4,6 +4,8 @@ import validateRequest from "../../middleware/validateRequest";
 import { userValidation } from "./userValidation";
 import { fileUploader } from "../../helpers/uploadFile";
 import { parseBodyMiddleware } from "../../middleware/parseBodyData";
+import auth from "../../middleware/auth";
+import { Role } from "@prisma/client";
 
 const route = Router()
 
@@ -20,6 +22,11 @@ route.post("/verify-otp",
 
 route.get("/all-users",
     userController.getAllUsersController
+)
+
+route.post("/change-password",
+    auth(Role.USER),
+    userController.changePasswordController
 )
 
 

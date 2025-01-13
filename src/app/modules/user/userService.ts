@@ -75,4 +75,24 @@ const getAllUsers = async () => {
 }
 
 
-export const userService = { createUser, verifyOtp, getAllUsers } 
+const changePasswordFromDB = async (payload: { email: string, password: string }) => {
+
+    const user = await prisma.user.findUnique({ where: { email: payload.email } })
+    if (!user) {
+        throw new ApiError(StatusCodes.NOT_FOUND, 'User not found')
+    }
+    const hashedPassword = await hash(payload.password, 10)
+    const result = await prisma.user.update({
+        where: {
+            email: payload.email
+        },
+        data: {
+            password: hashedPassword
+        }
+    })
+
+    return {result}
+}
+
+
+export const userService = { createUser, verifyOtp, getAllUsers, changePasswordFromDB } 

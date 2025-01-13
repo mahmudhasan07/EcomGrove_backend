@@ -18,8 +18,14 @@ const getAllUsersController = catchAsync(async (req: Request, res: Response) => 
     const result = await userService.getAllUsers();
     const pageNumber = req.query.page ? parseInt(req.query.page as string) : 1;
     const resultLimit = req.query.limit ? parseInt(req.query.limit as string) : 10;
-    
-    sendResponse(res, { statusCode: StatusCodes.OK, success: true, message: 'Get all users successfully', data: result.slice((pageNumber-1)*resultLimit,pageNumber*resultLimit) , meta:{limit:resultLimit,page:pageNumber,total:result.length} })
+
+    sendResponse(res, { statusCode: StatusCodes.OK, success: true, message: 'Get all users successfully', data: result.slice((pageNumber - 1) * resultLimit, pageNumber * resultLimit), meta: { limit: resultLimit, page: pageNumber, total: result.length } })
 })
 
-export const userController = { createUserController, verifyOtpController, getAllUsersController }
+const changePasswordController = catchAsync(async (req: Request, res: Response) => {
+    const result = await userService.changePasswordFromDB(req.body);
+
+    sendResponse(res, { success: true, statusCode: StatusCodes.OK, message: 'Password changed successfully' })
+})
+
+export const userController = { createUserController, verifyOtpController, getAllUsersController, changePasswordController }

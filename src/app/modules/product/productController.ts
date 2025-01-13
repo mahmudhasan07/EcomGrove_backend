@@ -14,4 +14,16 @@ const getAllProductsController = catchAsync(async (req: Request, res: Response) 
     sendResponse(res, { statusCode: StatusCodes.OK, success: true, message: "All products fetched successfully", data: result })
 })
 
-export const productController = { createProductController,getAllProductsController }
+const deleteProductController = catchAsync(async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const result = await productServices.deleteProductFromDb(id);
+    sendResponse(res, { statusCode: StatusCodes.OK, success: true, message: "Product deleted successfully", data: result })
+})
+
+const updateProductController = catchAsync(async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const result = await productServices.updateProductInDb(id, req.body);
+    sendResponse(res, {statusCode: StatusCodes.OK, success: true, message: "Product updated successfully", data: result })
+})
+
+export const productController = { createProductController,getAllProductsController, deleteProductController,updateProductController }

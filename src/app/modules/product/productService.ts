@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Product } from "@prisma/client";
 import { Request } from "express";
 
 const prisma = new PrismaClient()
@@ -27,4 +27,25 @@ const getAllProductsFromDb = async () => {
 
 }
 
-export const productServices = { createProductInDb, getAllProductsFromDb }
+const deleteProductFromDb = async (id: string) => {
+    const result = await prisma.product.delete({
+        where: {
+            id: id
+        }
+    })
+    return result
+}
+
+const updateProductInDb = async (id: string, payload: Product) => {
+    const result = await prisma.product.update({
+        where: {
+            id: id
+        },
+        data: {
+            ...payload
+        }
+    })
+    return result
+}
+
+export const productServices = { createProductInDb, getAllProductsFromDb, deleteProductFromDb, updateProductInDb }
