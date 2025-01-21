@@ -26,7 +26,7 @@ model User {
   state       String
   zipCode     String
   uploadImage String?
-  status      Status?    @default(PENDING)
+  status      Status?   @default(PENDING)
   createAt    DateTime  @default(now())
   updateAt    DateTime  @updatedAt
   Comment     Comment[]
@@ -40,16 +40,26 @@ model Product {
   description  String
   brandName    String
   price        Float
-  discount     Float? @default(0)
+  discount     Float?       @default(0)
   categoryType CategoryList
   category     String
-  rating       Float? @default(0)
-  image        String[]
+  rating       Float?       @default(0)
+  images       String[]     @default([])
   comments     Comment[]
+  cart         Cart[]
   createAt     DateTime     @default(now())
   updateAt     DateTime     @updatedAt
 
   @@map("product")
+}
+
+model Cart {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId      String   @db.ObjectId 
+  userId         String   @db.ObjectId
+  quantity       Int
+  productDetails Product? @relation(fields: [productId], references: [id])
+  @@map("cart")
 }
 
 model Comment {

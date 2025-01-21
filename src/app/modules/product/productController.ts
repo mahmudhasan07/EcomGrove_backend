@@ -11,7 +11,10 @@ const createProductController = catchAsync(async (req: Request, res: Response) =
 
 const getAllProductsController = catchAsync(async (req: Request, res: Response) => {
     const result = await productServices.getAllProductsFromDb();
-    sendResponse(res, { statusCode: StatusCodes.OK, success: true, message: "All products fetched successfully", data: result })
+    
+    const pageNumber = req.query.page ? parseInt(req.query.page as string) : 1;
+    const resultLimit = req.query.limit ? parseInt(req.query.limit as string) : 10;
+    sendResponse(res, { statusCode: StatusCodes.OK, success: true, message: "All products fetched successfully", data: result.slice((pageNumber - 1) * resultLimit, pageNumber * resultLimit), meta: { limit: resultLimit, page: pageNumber, total: result.length } })
 })
 
 const deleteProductController = catchAsync(async (req: Request, res: Response) => {
@@ -22,8 +25,8 @@ const deleteProductController = catchAsync(async (req: Request, res: Response) =
 
 const updateProductController = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id;
-    const result = await productServices.updateProductInDb(id, req.body);
-    sendResponse(res, {statusCode: StatusCodes.OK, success: true, message: "Product updated successfully", data: result })
+    const result = await productServices.updateProductInDb(id, req);
+    sendResponse(res, { statusCode: StatusCodes.OK, success: true, message: "Product updated successfully", data: result })
 })
 
-export const productController = { createProductController,getAllProductsController, deleteProductController,updateProductController }
+export const productController = { createProductController, getAllProductsController, deleteProductController, updateProductController }

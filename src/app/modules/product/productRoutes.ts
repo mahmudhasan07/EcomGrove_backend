@@ -15,8 +15,12 @@ route.post("/create",
 )
 
 route.get("/all", productController.getAllProductsController)
-route.delete("/delete/:id", productController.deleteProductController)
-route.put('/update/:id', productController.updateProductController)
+route.delete("/delete/:id", auth(Role.ADMIN), productController.deleteProductController)
+route.put('/update/:id',
+    auth(Role.ADMIN),
+    fileUploader.uploadProductImages,
+    parseBodyMiddleware,
+    productController.updateProductController)
 
 
 

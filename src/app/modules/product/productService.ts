@@ -36,13 +36,27 @@ const deleteProductFromDb = async (id: string) => {
     return result
 }
 
-const updateProductInDb = async (id: string, payload: Product) => {
+const updateProductInDb = async (id: string, req: Request) => {
+
+    const payload = req.body;
+    const file = req.files as any;
+
+    const uploadImages = file && file.map((e: { location: string }) => e?.location);
+
+    const findProduct = await prisma.product.findUnique({
+        where: {
+            id
+        }
+    })
+
+
     const result = await prisma.product.update({
         where: {
             id: id
         },
         data: {
-            ...payload
+            ...payload,
+            images: uploadImages.length > 0 ? uploadImages : findProduct?.images
         }
     })
     return result
